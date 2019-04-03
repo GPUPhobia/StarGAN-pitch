@@ -8,12 +8,10 @@ This is a tensorflow implementation of the paper: [StarGAN-VC: Non-parallel many
 
 ## Dependencies
 
-- Python 3.6 (or higher)
-- tensorflow 1.8
+- Python 3.5 (or higher)(replace all f-string with format output)
+- tensorflow 1.12.0
 - librosa 
 - pyworld 
-- tensorboard
-- scikit-learn
 
 > NOTE:According to some feedbacks, we recommend to use tensorflow version 1.8  exactly. (Tensorflow 1.11 generate nonsense results)
 
@@ -30,7 +28,7 @@ For simplicity use:
 python download.py 
 ```
 
-The downloaded zip files are extracted to `./data/vcc2016_training` and `./data/evaluation_all`.
+The downloaded zip files are extracted to `./data/vcc2016_training` and `./data/evaluation_all`. **You should manually copy required folders to fourspeakers(_test) folders.**
 
 1. **training set:** In the experiment, we choose **four speakers** from `./data/vcc2016_training`.  We  move the corresponding folder(eg. SF1,SF2,TM1,TM2 ) to `./data/fourspeakers`.
 2. **testing set** In the experiment, we choose **four speakers** from `./data/evaluation_all`.  We  move the corresponding folder(eg. SF1,SF2,TM1,TM2 ) to `./data/fourspeakers_test`.
