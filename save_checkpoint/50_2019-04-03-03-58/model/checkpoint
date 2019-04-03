@@ -1,0 +1,6 @@
+model_checkpoint_path: "starganvc_model"
+all_model_checkpoint_paths: "../../10_2019-04-03-03-58/model/starganvc_model"
+all_model_checkpoint_paths: "../../20_2019-04-03-03-58/model/starganvc_model"
+all_model_checkpoint_paths: "../../30_2019-04-03-03-58/model/starganvc_model"
+all_model_checkpoint_paths: "../../40_2019-04-03-03-58/model/starganvc_model"
+all_model_checkpoint_paths: "starganvc_model"

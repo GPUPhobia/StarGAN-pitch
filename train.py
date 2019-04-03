@@ -167,13 +167,13 @@ def train(processed_dir: str, test_wav_dir: str):
         if epoch % 10 == 0 and epoch != 0:
             print('============test model============')
             #out put path
-            file_path = os.path.join('./out', f'{epoch}_{timestr}')
+            file_path = os.path.join('./out', '{}_{}'.format(epoch, timestr))
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
 
             tempfiles = []
             for one_speaker in all_speaker:
-                p = os.path.join(test_wav_dir, f'{one_speaker}/*.wav')
+                p = os.path.join(test_wav_dir, '{}/*.wav'.format(one_speaker))
                 wavs = glob.glob(p)
                 tempfiles.append(wavs[0])
                 tempfiles.append(wavs[1])  #'./data/fourspeakers_test/200006.wav'
@@ -234,11 +234,11 @@ def train(processed_dir: str, test_wav_dir: str):
                 synwav = synwav[:-pad_length]
 
                 #save synthesized wav to file
-                wavname = f'{speaker}-{target_name}+{name}'
+                wavname = '{}-{}+{}'.format(speaker, target_name, name)
                 wavpath = os.path.join(file_path, 'wavs')
                 if not os.path.exists(wavpath):
                     os.makedirs(wavpath, exist_ok=True)
-                librosa.output.write_wav(f'{wavpath}/{wavname}', synwav, sr=fs)
+                librosa.output.write_wav('{}/{}'.format(wavpath, wavname), synwav, sr=fs)
                 print('============save converted audio============')
 
             print('============test finished!============')
@@ -252,7 +252,7 @@ def train(processed_dir: str, test_wav_dir: str):
             if not os.path.exists(model_path):
                 os.makedirs(model_path, exist_ok=True)
 
-            print(f'save model: {model_path}')
+            print('save model: {}'.format(model_path))
             model.save(directory=model_path, filename=MODEL_NAME)
 
         end_time_epoch = time.time()

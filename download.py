@@ -20,13 +20,12 @@ def download_vcc2016():
     if os.path.exists(data_files[0]) or os.path.exists(data_files[1]):
         print("File already exists!")
         return
-
-    trainset = f'{datalink}/{data_files[0]}'
-    evalset = f'{datalink}/{data_files[1]}'
-
-    train_comm = f'wget {trainset}'
-    eval_comm = f'wget {evalset}'
-
+    trainset = "{}/{}".format(datalink, data_files[0])
+    evalset = "{}/{}".format(datalink, data_files[1])
+    
+    train_comm = "wget {}".format(trainset)
+    eval_comm = "wget {}".format(evalset)
+    
     train_comm = shlex.split(train_comm)
     eval_comm = shlex.split(eval_comm)
 
@@ -44,11 +43,11 @@ def download_vcc2016():
 def create_dirs(trainset: str = './data/fourspeakers', testset: str = './data/fourspeakers_test'):
     '''create train test dirs'''
     if not os.path.exists(trainset):
-        print(f'create train set dir {trainset}')
+        print('create train set dir {}'.format(trainset))
         os.makedirs(trainset, exist_ok=True)
 
     if not os.path.exists(testset):
-        print(f'create test set dir {testset}')
+        print('create test set dir {}'.format(testset))
         os.makedirs(testset, exist_ok=True)
 
 

@@ -23,17 +23,16 @@ def load_wavs(dataset: str, sr):
     resdict contains all wav files   
     '''
     data = {}
-    with os.scandir(dataset) as it:
-        for entry in it:
-            if entry.is_dir():
-                data[entry.name] = []
-                # print(entry.name, entry.path)
-                with os.scandir(entry.path) as it_f:
-                    for onefile in it_f:
-                        if onefile.is_file():
-                            # print(onefile.path)
-                            data[entry.name].append(onefile.path)
-    print(f'loaded keys: {data.keys()}')
+    print('dataset is {}'.format(dataset))
+    for entry in os.scandir(dataset):
+        if entry.is_dir():
+            data[entry.name] = []
+            # print(entry.name, entry.path)
+            for onefile in os.scandir(entry.path):
+                if onefile.is_file():
+                # print(onefile.path)
+                    data[entry.name].append(onefile.path)
+    print('loaded keys: {}'.format(data.keys()))
     #data like {TM1:[xx,xx,xxx,xxx]}
     resdict = {}
 
@@ -44,7 +43,7 @@ def load_wavs(dataset: str, sr):
         for one_file in value:
 
             filename = one_file.split('/')[-1].split('.')[0]  #like 100061
-            newkey = f'{filename}'
+            newkey = '{}'.format(filename)
             wav, _ = librosa.load(one_file, sr=sr, mono=True, dtype=np.float64)
 
             resdict[key][newkey] = wav
@@ -52,7 +51,7 @@ def load_wavs(dataset: str, sr):
             print('.', end='')
             cnt += 1
 
-    print(f'\nTotal {cnt} aduio files!')
+    print ('\nTotal {} audio files!'.format(cnt))
     return resdict
 
 
@@ -66,9 +65,9 @@ def wav_to_mcep_file(dataset: str, sr=16000, ispad: bool = False, processed_file
         for f in filelist:
             os.remove(f)
 
-    allwavs_cnt = len(glob.glob(f'{dataset}/*/*.wav'))
+    allwavs_cnt = len(glob.glob('{}/*/*.wav'.format(dataset)))
     # allwavs_cnt = allwavs_cnt//4*3 * 12+200 #about this number not precise
-    print(f'Total {allwavs_cnt} audio files!')
+    print('Total {} audio files!'.format(allwavs_cnt))
 
     d = load_wavs(dataset, sr)
     cnt = 1  #
@@ -77,15 +76,15 @@ def wav_to_mcep_file(dataset: str, sr=16000, ispad: bool = False, processed_file
         for audio_name, audio_wav in d[one_speaker].items():
             # cal source audio feature
             audio_mcep_dict = cal_mcep(audio_wav, fs=sr, ispad=ispad, frame_period=0.005, dim=FEATURE_DIM)
-            newname = f'{one_speaker}-{audio_name}'
+            newname = '{}-{}'.format(one_speaker, audio_name)
 
             #save the dict as npz
-            file_path_z = f'{processed_filepath}/{newname}'
-            print(f'save file: {file_path_z}')
+            file_path_z = '{}/{}'.format(processed_filepath, newname)
+            print('save file: {}'.format(file_path_z))
             np.savez(file_path_z, audio_mcep_dict)
 
             #save every  36*FRAMES blocks
-            print(f'audio mcep shape {audio_mcep_dict["coded_sp"].shape}')
+            print('audio mcep shape {}'.format(audio_mcep_dict["coded_sp"].shape))
 
             #TODO step may be FRAMES//2
             for start_idx in range(0, audio_mcep_dict["coded_sp"].shape[1] - FRAMES + 1, FRAMES):
@@ -93,10 +92,10 @@ def wav_to_mcep_file(dataset: str, sr=16000, ispad: bool = False, processed_file
 
                 if one_audio_seg.shape[1] == FRAMES:
 
-                    temp_name = f'{newname}_{start_idx}'
-                    filePath = f'{processed_filepath}/{temp_name}'
+                    temp_name = '{}_{}'.format(newname, start_idx)
+                    filePath = '{}/{}'.format(processed_filepath, temp_name)
 
-                    print(f'[{cnt}:{allwavs_cnt}]svaing file: {filePath}.npy')
+                    print('[{}:{}]svaing file: {}.npy'.format(cnt, allwavs_cnt, filePath))
                     np.save(filePath, one_audio_seg)
             cnt += 1
 

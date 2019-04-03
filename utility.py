@@ -57,7 +57,7 @@ class Normalizer(object):
                 stat_filepath = [fn for fn in glob.glob(p) if one_speaker in fn][0]
             except:
                 raise Exception('====no match files!====')
-            print(f'found stat file: {stat_filepath}')
+            print('found stat file: {}'.format(stat_filepath))
             t = np.load(stat_filepath)
             d_temp = t.f.arr_0.item()
             # print(d_temp.keys())
@@ -164,8 +164,8 @@ class GenerateStatics(object):
 
             tempdict = {'log_f0s_mean': log_f0s_mean, 'log_f0s_std': log_f0s_std, 'coded_sps_mean': coded_sps_mean, 'coded_sps_std': coded_sps_std}
 
-            filename = os.path.join(etc_path, f'{one_speaker}-stats.npz')
-            print(f'save: {filename}')
+            filename = os.path.join(etc_path, '{}-stats.npz'.format(one_speaker))
+            print('save: {}'.format(filename))
             np.savez(filename, tempdict)
 
 
